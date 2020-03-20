@@ -1,9 +1,9 @@
 package Java0319;
-
+import java.util.Date;
 public class Main {
     public static void main(String[] args){
-        Person person = new Person("caocao",19);
-        person.show();
-        System.out.println(person);
+      Date date  = new Date();
+      //得到一个毫秒级别的时间戳
+        System.out.println(date.getTime());
     }
 }
