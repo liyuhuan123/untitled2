@@ -4,12 +4,13 @@ import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args){
-        System.out.println(divide(10,0));
+        System.out.println(func());
     }
-    public static int divide(int x,int y){
-        if(y == 0){
-            throw new ArithmeticException("抛出除0异常");
+    public static int func(){
+        try{
+            return 10;
+        }finally{
+            return 20;
         }
-        return x/y;
     }
 }
