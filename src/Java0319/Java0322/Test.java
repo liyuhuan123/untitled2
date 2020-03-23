@@ -4,13 +4,12 @@ import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args){
-        Student[] student = new Student[]{
-            new Student("张三",95),
-            new Student("李四",96),
-            new Student("王五",97),
-            new Student("赵六",93),
-        };
-        Arrays.sort(student);
-        System.out.println(Arrays.toString(student));
+        System.out.println(divide(10,0));
+    }
+    public static int divide(int x,int y){
+        if(y == 0){
+            throw new ArithmeticException("抛出除0异常");
+        }
+        return x/y;
     }
 }
