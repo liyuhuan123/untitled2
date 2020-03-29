@@ -1,34 +1,53 @@
 package Java15;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Lt {
-    public boolean isValid(String s) {
-        Map<Character,Character> map = new HashMap();
-        map.put('(',')');
-        map.put('{','}');
-        map.put('[',']');
-        Stack<Character> stack = new Stack<>();
-        for(int i = 0;i <s.length();i++){
-            char c = s.charAt(i);
-            if(c == '(' || c == '[' || c == '{'){
-                stack.push(c);
-                continue;
-            }
-            if(stack.empty()){
-                return false;
-            }
-            char top = stack.pop();
-            if(map.get(top) == c){
-                continue;
-            }
-            return false;
+        private Queue<Integer> A = new LinkedList<>();
+        private Queue<Integer> B = new LinkedList<>();
+
+    /** Push element x onto stack. */
+    public void push(int x) {
+        A.offer(x);
+    }
+
+    /** Removes the element on top of the stack and returns that element. */
+    public Integer pop() {
+        if(empty()){
+            return null;
         }
-        if(stack.empty()){
-            return true;
+        while(A.size() > 1){
+            Integer front = A.poll();
+            B.offer(front);
         }
-        return false;
+        int ret = A.poll();
+        swapAB();
+        return ret;
+    }
+    public void swapAB(){
+        Queue<Integer> tmp = A;
+        A = B;
+        B = tmp;
+    }
+
+    /** Get the top element. */
+    public Integer top() {
+        if(empty()){
+            return null;
+        }
+        if(A.size() > 1){
+            Integer front = A.poll();
+            B.offer(front);
+        }
+        int ret = A.poll();
+        B.offer(ret);
+        swapAB();
+        return ret;
+    }
+
+    /** Returns whether the stack is empty. */
+    public boolean empty() {
+        return A.isEmpty() && B.isEmpty();
     }
 }
