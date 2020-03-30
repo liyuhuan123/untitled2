@@ -1,52 +1,30 @@
 package Java15;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Stack;
-
+class Employee{
+   public int id;
+   public int importance;
+   public List<Integer> subordinates;
+}
 public class Lt {
-    /** Initialize your data structure here. */
-    Stack<Integer> A = new Stack<>();
-    Stack<Integer> B = new Stack<>();
-
-    /** Push element x to the back of queue. */
-    public void push(int x) {
-        //1.先把B中的元素都倒腾到A里
-        while(!B.isEmpty()){
-            int ret = B.pop();
-            A.push(ret);
+    Map<Integer,Employee> map = new HashMap<>();
+    public int getImportance(List<Employee> employees, int id) {
+        for(Employee e : employees){
+            map.put(e.id,e);
         }
-        A.push(x);
+        return dfs(id);
 
     }
+    private int dfs(int id){
+        Employee employee = map.get(id);
+        int sum = employee.importance;
+        for(int o:employee.subordinates){
+            sum += dfs(o);
 
-    /** Removes the element from in front of queue and returns that element. */
-    public Integer pop() {
-        while(empty()){
-            return null;
         }
-        while(!A.isEmpty()){
-            int ret = A.pop();
-            B.push(ret);
-        }
-        return B.pop();
-
-    }
-
-    /** Get the front element. */
-    public Integer peek() {
-        while(empty()){
-            return null;
-        }
-        while(!A.isEmpty()){
-            int ret = A.pop();
-            B.push(ret);
-        }
-        return B.peek();
-
-    }
-
-    /** Returns whether the queue is empty. */
-    public boolean empty() {
-        return A.isEmpty()&&B.isEmpty();
-
+        return sum;
     }
 }
