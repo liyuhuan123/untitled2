@@ -1,53 +1,52 @@
 package Java15;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.Stack;
 
 public class Lt {
-        private Queue<Integer> A = new LinkedList<>();
-        private Queue<Integer> B = new LinkedList<>();
+    /** Initialize your data structure here. */
+    Stack<Integer> A = new Stack<>();
+    Stack<Integer> B = new Stack<>();
 
-    /** Push element x onto stack. */
+    /** Push element x to the back of queue. */
     public void push(int x) {
-        A.offer(x);
+        //1.先把B中的元素都倒腾到A里
+        while(!B.isEmpty()){
+            int ret = B.pop();
+            A.push(ret);
+        }
+        A.push(x);
+
     }
 
-    /** Removes the element on top of the stack and returns that element. */
+    /** Removes the element from in front of queue and returns that element. */
     public Integer pop() {
-        if(empty()){
+        while(empty()){
             return null;
         }
-        while(A.size() > 1){
-            Integer front = A.poll();
-            B.offer(front);
+        while(!A.isEmpty()){
+            int ret = A.pop();
+            B.push(ret);
         }
-        int ret = A.poll();
-        swapAB();
-        return ret;
-    }
-    public void swapAB(){
-        Queue<Integer> tmp = A;
-        A = B;
-        B = tmp;
+        return B.pop();
+
     }
 
-    /** Get the top element. */
-    public Integer top() {
-        if(empty()){
+    /** Get the front element. */
+    public Integer peek() {
+        while(empty()){
             return null;
         }
-        if(A.size() > 1){
-            Integer front = A.poll();
-            B.offer(front);
+        while(!A.isEmpty()){
+            int ret = A.pop();
+            B.push(ret);
         }
-        int ret = A.poll();
-        B.offer(ret);
-        swapAB();
-        return ret;
+        return B.peek();
+
     }
 
-    /** Returns whether the stack is empty. */
+    /** Returns whether the queue is empty. */
     public boolean empty() {
-        return A.isEmpty() && B.isEmpty();
+        return A.isEmpty()&&B.isEmpty();
+
     }
 }
