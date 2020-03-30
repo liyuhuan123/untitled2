@@ -1,29 +1,32 @@
 package Java15;
 
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.Queue;
+
 class Employee{
-   public int id;
-   public int importance;
-   public List<Integer> subordinates;
+    public int id;
+    public int importance;
+    public List<Integer> subordinates;
 }
 public class Lt {
-    Map<Integer,Employee> map = new HashMap<>();
     public int getImportance(List<Employee> employees, int id) {
-        for(Employee e : employees){
-            map.put(e.id,e);
+        if(employees.size() == 0){
+            return 0;
         }
-        return dfs(id);
-
-    }
-    private int dfs(int id){
-        Employee employee = map.get(id);
-        int sum = employee.importance;
-        for(int o:employee.subordinates){
-            sum += dfs(o);
-
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(id);
+        int sum = 0;
+        while(!(queue.size() == 0)){
+            int tmp = queue.poll();
+            for(Employee e : employees){
+                if(tmp == e.id){
+                    sum += e.importance;
+                    for(int i : e.subordinates){
+                        queue.add(i);
+                    }
+                }
+            }
         }
         return sum;
     }
