@@ -13,15 +13,20 @@ class TreeNode{
 }
 
 public class Interview {
-    public List<Integer> postorderTraversal(TreeNode root) {
-//给定一个二叉树，返回它的后序遍历
-        List<Integer> list = new ArrayList<>();
-        if(root == null){
-            return null;
+    //给定两个二叉树，编写一个函数来检验它们是否相同。
+    //如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(q == null && p == null){
+            return true;
         }
-        list.addAll(postorderTraversal(root.left));
-        list.addAll(postorderTraversal(root.right));
-        list.add(root.val);
-        return list;
+        if(q == null || p == null){
+            return false;
+        }
+        if(p.val != q.val){
+            return false;
+        }else{
+            return isSameTree(p.left,q.left)&&
+                    isSameTree(p.right,q.right);
+        }
     }
 }
