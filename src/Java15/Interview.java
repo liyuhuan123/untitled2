@@ -13,19 +13,16 @@ class TreeNode{
 }
 
 public class Interview {
-    public List<Integer> preorderTraversal(TreeNode root) {
-        //给定一个二叉树，返回它的 前序 遍历。
-        List<Integer> result = new ArrayList<>();
+    public List<Integer> inorderTraversal(TreeNode root) {
+        //给定一个二叉树，返回它的中序 遍历。
+        List<Integer> list = new ArrayList<>();
         if(root == null){
-            //空树返回一个空的List（元素个数为0，但是不是null）
-            return result;
+            return list;
         }
-        //访问根结点
-        result.add(root.val);
-        result.addAll(preorderTraversal(root.left));
-        result.addAll(preorderTraversal(root.right));
-        return result;
+        list.addAll(inorderTraversal(root.left));
+        list.add(root.val);
+        list.addAll(inorderTraversal(root.right));
 
-
+        return list;
     }
 }
