@@ -14,140 +14,46 @@ class TreeNode {
         val = x;
     }
 }
-public class Learnjava_0402 {
-//1.给定一个二叉树，返回它的 前序 遍历
-public List<Integer> preorderTraversal(TreeNode root) {
-    List<Integer> list = new ArrayList<>();
-    if(root == null){
-        return list;
-    }
-    list.add(root.val);
-    list.addAll(preorderTraversal(root.left));
-    list.addAll(preorderTraversal(root.right));
-    return list;
-
-    }
-    public List<Integer> inorderTraversal(TreeNode root) {
-    //2.给定一个二叉树，返回它的中序遍历
-    List<Integer> list = new ArrayList<>();
-    if(root == null){
-        return list;
-    }
-    list.addAll(inorderTraversal(root.left));
-    list.add(root.val);
-    list.addAll(inorderTraversal(root.right));
-    return list;
-
-    }
-    public List<Integer> postorderTraversal(TreeNode root) {
-    //3.给定一个二叉树，返回它的 后序 遍历。
-        List<Integer> list = new ArrayList<>();
-        if(root == null){
-            return list;
-        }
-        list.addAll(postorderTraversal(root.left));
-        list.addAll(postorderTraversal(root.right));
-        list.add(root.val);
-        return list;
-    }
-    public boolean isSameTree(TreeNode p, TreeNode q) {
-//4.给定两个二叉树，编写一个函数来检验它们是否相同。
-//如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
-       if(p == null && q == null){
-           return true;
-       }
-       if(p == null || q == null){
-           return false;
-       }
-       if(p.val != q.val){
-           return false;
-       }
-       return isSameTree(p.left,q.left) &&
-               isSameTree(p.right,q.right);
-    }
-    public boolean isSubtree(TreeNode s, TreeNode t) {
-//5.给定两个非空二叉树 s 和 t，检验 s 中是否包含和 t
-// 具有相同结构和节点值的子树。s 的一个子树包括 s
-// 的一个节点和这个节点的所有子孙。s 也可以看做它自身的一棵子树。
-        if(s == null && t == null){
-            return true;
-        }
-        if(s == null || t == null){
-            return false;
-        }
-        boolean ret = false;
-        if(s.val == t.val){
-            ret = isSameTree(s,t);
-        }
-        return ret || isSubtree(s.left,t) ||
-                isSubtree(s.right,t);
-
-    }
-    public int maxDepth(TreeNode root) {
-//6.给定一个二叉树，找出其最大深度。
-//二叉树的深度为根节点到最远叶子节点的最长路径上的节点数
-        if(root == null){
-            return 0;
-        }
-        if(root.left == null && root.right == null){
-            return 1;
-        }
-        int leftDepth = maxDepth(root.left);
-        int rightDepth = maxDepth(root.right);
-        return 1 + (Math.max(leftDepth,rightDepth));
-
-    }
-    public boolean isBalanced(TreeNode root) {
-//7.给定一个二叉树，判断它是否是高度平衡的二叉树
+public class Learnjava_0402{
+    public boolean iscompleteTree(TreeNode root){
+        //判断一个树是否是完全二叉树
+        //针对这个树进行层序遍历
         if(root == null){
             return true;
         }
-        if(root.left == null && root.right == null){
-            return true;
-        }
-        int leftDepth = maxDepth(root.left);
-        int rightDepth = maxDepth(root.right);
-        int temp = leftDepth - rightDepth;
-        if(temp > 1 || temp < -1){
-            return false;
-        }
-        return isBalanced(root.left) && isBalanced(root.right);
-    }
-    public boolean isSymmetric(TreeNode root) {
-    //8.给定一个二叉树，检查它是否是镜像对称的
-        if(root == null){
-            return true;
-        }
-        return isMirror(root.left,root.right);
-    }
-    private boolean isMirror(TreeNode s,TreeNode t){
-
-    if(s == null && t == null){
-        return true;
-    }
-    if(s == null || t == null){
-        return false;
-    }
-    if(s.val != t.val){
-        return false;
-    }
-    return isMirror(s.left,t.right) && isMirror(s.right,t.left);
-    }
-    public void levelOrder(TreeNode root){
-    //9.层序遍历
+        boolean isSecondstep = false;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
         while(!queue.isEmpty()){
             TreeNode cur = queue.poll();
-            System.out.print(cur.val + " ");
-            if(cur.left != null){
-                queue.offer(cur.left);
-            }
-            if(cur.right != null){
-                queue.offer(cur.right);
+            //针对当当前节点进行访问（判断是否符合完全二叉树的要求）
+            if(!isSecondstep){
+                //这是第一阶段
+                if(cur.left != null &&cur.right != null){
+                    queue.offer(cur.left);
+                    queue.offer(cur.right);
+                }else if(cur.left == null && cur.right != null){
+                    //当前第一阶段中某个节点只有右子树，没有左子树
+                    //一定不是完全二叉树
+                    return false;
+                }else if(cur.left != null && cur.right == null){
+                    //切换到第二阶段
+                    isSecondstep = true;
+                    queue.offer(cur.left);
+                }else{
+                    //左右子树都为空，也切换到第二阶段
+                    isSecondstep = true;
+                }
+            }else{
+                //这是第二阶段
+                //要求第二阶段任何一个人节点都必须没有子树
+                //只要找到某个节点带子树，就说明找到了反例
+                if(cur.left != null || cur.right != null){
+                    return false;
+                }
             }
         }
-
+        return true;
     }
 
 }
