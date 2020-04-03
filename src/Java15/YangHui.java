@@ -42,6 +42,5 @@ public class YangHui {
             result.add(curLine);
         }
         return result;
-
     }
 }
