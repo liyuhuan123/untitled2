@@ -17,7 +17,42 @@ public class SecondExam {
             array[j+1] = v;
         }
     }
-
+    public static void heapSort(int[] array){
+        //先建堆
+        creatHeap(array);
+        for(int i = 0;i < array.length;i++){
+            int heapSize = array.length - i;
+            swap(array,heapSize - 1,0);
+            heapSize--;
+            shiftDown(array,heapSize,0);
+        }
+    }
+    private static void creatHeap(int[] array){
+        for(int i = (array.length - 1 - 1)/2;i >= 0;i--){
+            shiftDown(array,array.length,i);
+        }
+    }
+    private static void shiftDown(int[] array,int heapSize,int index){
+        int parent = index;
+        int child = parent * 2 + 1;
+        while(child < heapSize){
+            if(child + 1 < heapSize && array[child + 1] > array[child]){
+                child += 1;
+            }
+            if(array[parent] < array[child]){
+                swap(array,child,parent);
+            }else{
+                break;
+            }
+            parent = child;
+            child = parent * 2 + 1;
+        }
+    }
+    private static void swap(int[] array,int i,int j){
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
     public static void selectSort(int[] array){
         for(int i = 0;i < array.length;i++){
             for(int j = i + 1;j < array.length;j++){
@@ -44,7 +79,8 @@ public class SecondExam {
         int[] array = {9,5,2,3,7,6,8};
         //insertSort(array);
         //selectSort(array);
-        bubbleSort(array);
+        //bubbleSort(array);
+        heapSort(array);
         System.out.println(Arrays.toString(array));
     }
 }
