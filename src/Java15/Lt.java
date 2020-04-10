@@ -1,31 +1,35 @@
 package Java15;
 
-import java.util.Stack;
-
 public class Lt {
-    //输入两个整数序列，
-    //第一个序列表示栈的压入顺序，
-    //请判断第二个序列是否可能为该栈的弹出顺序。
-    //假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，
-    //序列4,5,3,2,1是该压栈序列对应的一个弹出序列，
-    //但4,3,5,1,2就不可能是该压栈序列的弹出序列。
-      //      （注意：这两个序列的长度是相等的）
-    public boolean IsPopOrder(int [] pushA,int [] popA) {
-        if(pushA.length == 0 ||
-                popA.length == 0 ||
-                pushA.length != popA.length){
-            return false;
-        }
-        int j = 0;
-        Stack<Integer> stack = new Stack<>();
-        for(int i = 0;i < pushA.length;i++){
-            stack.push(pushA[i]);
-            while(!stack.isEmpty() && stack.peek() == popA[j]){
-                j++;
-                stack.pop();
+    //通过size来指定array中哪些元素是有效的堆元素
+    //index表示从哪个位置的下标开始调整
+    //左右子树都是堆，才能进行向下调整
+    public static void shiftDown(int[] array,int size,int index){
+        int parent = index;
+        int child = 2 * parent + 1;
+        while(child < size){
+            //比较左右子树，找到较小值
+            if(child + 1 < size && array[child+1] > array[child]){
+                child = child + 1;
             }
+            //经过上面的比较，已经不知道child是左子树还是右子树了，知道的是child下标一定对应左右子树最小值的下标
+            if(array[child] < array[parent]){
+                //不符合小堆的规则
+                int temp = array[child];
+                array[child] = array[parent];
+                array[parent] = temp;
+            }else{
+                //调整完毕，不需要继续了
+                break;
+            }
+            parent = child;
+            child = parent * 2 + 1;
         }
-        return stack.isEmpty();
+    }
+    public static void creatHeap(int[] array){
+        for(int i = (array.length - 1 - 1)/ 2;i>= 0;i--){
+            shiftDown(array,array.length,i);
+        }
     }
 }
 
