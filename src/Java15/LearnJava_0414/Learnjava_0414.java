@@ -33,11 +33,11 @@ public class Learnjava_0414 {
             Arrays.sort(stones);
             if(stones[length - 1] == stones[length - 2]){
                 length = length - 2;
-            }
-            int temp = stones[length - 1];
-            stones[length - 1] = 0;
-            stones[length - 2] = temp - stones[length - 2];
-            length--;
+            }else{
+                int temp = stones[length - 1];
+                stones[length - 1] = 0;
+                stones[length - 2] = temp - stones[length - 2];
+                length--;}
         }
         if(length == 1){
             return stones[0];
@@ -45,28 +45,35 @@ public class Learnjava_0414 {
         return 0;
     }
     public boolean isCompleteTree(TreeNode root) {
+        if(root == null){
+            return true;
+        }
+        boolean isSecondStep = false;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
-        boolean temp = false;
-        while (!queue.isEmpty()) {
+        while(!queue.isEmpty()){
             TreeNode cur = queue.poll();
-            if(!temp) {
-                if (cur.left != null && cur.right != null) {
+            if(!isSecondStep){
+                if(cur.left != null && cur.right != null){
                     queue.offer(cur.left);
                     queue.offer(cur.right);
-                } else if ((cur.left != null && cur.right == null)||
-                        (cur.left == null && cur.right == null)){
-                    temp = true;
-                }else if(cur.left == null && cur.right != null){
+                }else{
+                    if(cur.left != null && cur.right == null){
+                        isSecondStep = true;
+                        queue.offer(cur.left);
+                        }else if(cur.left == null && cur.right != null){
+                        return false;
+                    }else{
+                        isSecondStep = true;
+                    }
+                    }
+                }else{
+                if(cur.left != null || cur.right != null){
                     return false;
                 }
-            }else{
-                if(cur.left == null && cur.right == null){
-                    return true;
-                }
             }
-        }
-        return false;
+            }
+        return true;
     }
     public static void main(String[] args){
         int[] stones = {1,4,2,5,6,9,7};
